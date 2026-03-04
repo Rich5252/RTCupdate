@@ -256,7 +256,7 @@
             // 
             timer1.Enabled = true;
             timer1.Interval = 900000;
-            timer1.Tick += btnNTPupdate_Click;
+            timer1.Tick += btnResetCurrent_Click;
             // 
             // Form1
             // 
