@@ -11,3 +11,7 @@ Note that FT4 has a 1 second sync window so is much less critical. FT8 uses a di
 Remember to consider your delays in transmission. My TX is part of my homebrew SDRUno based system and uses UDP datagrams to control the TX. I see delays from about 50 to 150ms on UDP TX commands. Also consider the SDR latency time. This effectively adds delays to the received signal (making it appear late) and on my SDRUno sytem I've measured this as 125 - 175s so quite significant in FT2 terms. So the UDP and SDR latency typically add ~ 200ms delay and this eats into the 500ms available when the receiver is exactly synced to UTC.
 
 On FT2 look out for signals in waterfall that are looking late in period and not decodeing. Increase the delay using the Inc button and bring the signal into decode window. Typically the minimum delay to achieve decode will give you best chance of completeing a QSO. For normal operation I set 150 or 200ms as default and find this is optimal in my SDR system case.
+
+73
+Rich
+G4AHN
