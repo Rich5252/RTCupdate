@@ -286,6 +286,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             Text = "RTC Updater";
+            Activated += Form1_Activated;
             FormClosing += Form1_FormClosing;
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();

@@ -3,6 +3,7 @@ namespace RTCupdate
     public partial class Form1 : Form
     {
         public IniFile ini = new IniFile("settings.ini");
+        private int AutoUpdateIntervalMs = 900000;              // 15 minute
 
         public Form1()
         {
@@ -19,6 +20,7 @@ namespace RTCupdate
             this.tbDefaultOffset.Text = ini.Read("Settings", "DefaultOffset", "150");
             this.tbCurrentOffset.Text = ini.Read("Settings", "CurrentOffset", "150");
             this.tbIncrement.Text = ini.Read("Settings", "Increment", "50");
+            AutoUpdateIntervalMs = int.Parse(ini.Read("Settings", "AutoUpdateIntervalMs", "900000"));
 
             RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), true);
         }
@@ -86,6 +88,11 @@ namespace RTCupdate
             tbCurrentOffset.Text = (cur - inc).ToString();
             RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text));
         }
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+            timer1.Interval = AutoUpdateIntervalMs;
+            timer1.Start();
+        }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -96,11 +103,13 @@ namespace RTCupdate
                 ini.Write("Window", "Width", this.Width.ToString());
                 ini.Write("Window", "Height", this.Height.ToString());
             }
-            
+
             ini.Write("Settings", "NTPServer", tbNTPserver.Text);
             ini.Write("Settings", "DefaultOffset", tbDefaultOffset.Text);
             ini.Write("Settings", "CurrentOffset", tbCurrentOffset.Text);
             ini.Write("Settings", "Increment", tbIncrement.Text);
         }
+
+
     }
 }
