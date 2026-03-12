@@ -4,6 +4,7 @@ namespace RTCupdate
     {
         public IniFile ini = new IniFile("settings.ini");
         private int AutoUpdateIntervalMs = 900000;              // 15 minute
+        private NamedPipeClient _NamedPipeClient = new();       //coms with TXLink for UDP time offset monitoring
 
         public Form1()
         {
@@ -49,7 +50,11 @@ namespace RTCupdate
 
                 double diffMs = monitor.GetOffsetInMilliseconds(tbNTPserver.Text);
 
-                StatusNTP.Text = ($"Last NTP: {clock.GetFormattedUtcTime()}    RTCdiff: {diffMs:F0}ms");
+                string str = offsetMs.ToString();
+                string strNPstatus = _NamedPipeClient.TryConnect() ? " +" : " -";
+                _NamedPipeClient.SendCommand(str);      //send offset to TXLink for UDP time offset monitoring
+
+                StatusNTP.Text = ($"Last NTP: {clock.GetFormattedUtcTime()}    RTCdiff: {diffMs:F0}ms {strNPstatus}");
             }
             catch (Exception ex)
             {
