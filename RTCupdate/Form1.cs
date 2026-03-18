@@ -9,8 +9,7 @@ namespace RTCupdate
         public Form1()
         {
             InitializeComponent();
-            this.TopMost = true;
-
+            
             this.StartPosition = FormStartPosition.Manual;
             this.Top = int.Parse(ini.Read("Window", "Top", "100"));
             this.Left = int.Parse(ini.Read("Window", "Left", "100"));
@@ -23,6 +22,9 @@ namespace RTCupdate
             this.tbIncrement.Text = ini.Read("Settings", "Increment", "50");
             AutoUpdateIntervalMs = int.Parse(ini.Read("Settings", "AutoUpdateIntervalMs", "900000"));
 
+            this.WindowState = FormWindowState.Normal;
+            this.TopMost = true;
+            
             RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), true);
         }
 
@@ -41,7 +43,7 @@ namespace RTCupdate
 
                 if (RTCupdate)
                 {
-                    if (!clock.UpdateClock(networkTime, offsetMs))
+                    if (!clock.UpdateClock(networkTime, offsetMs - 7))
                     {
                         StatusNTP.Text = "Failed to update clock";
                         return;
@@ -97,6 +99,8 @@ namespace RTCupdate
         {
             timer1.Interval = AutoUpdateIntervalMs;
             timer1.Start();
+            this.WindowState = FormWindowState.Normal;
+            this.TopMost = true;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)

@@ -201,14 +201,26 @@ public class TimeMonitor
             // t3: Local Receive Time
             DateTime t3 = DateTime.UtcNow;
 
-            // Extract t2: Server Transmit Time (bytes 40-47)
-            ulong serverTicks = GetServerTicks(ntpData, 40);
-            DateTime t2 = ParseNtpTime(serverTicks);
+            // Extract t1: Server Receive Time (bytes 32-39)
+            ulong serverArrivalTicks = GetServerTicks(ntpData, 32);
+            DateTime t1 = ParseNtpTime(serverArrivalTicks);
 
-            // Calculate Offset (Simplified for basic diff: ServerTime - LocalTime)
-            // A more robust version would account for travel time (t3-t0)
-            double roundTrip = (t3 - t0).TotalMilliseconds;
-            double offset = (t2 - t3).TotalMilliseconds + (roundTrip / 2);
+            // Extract t2: Server Transmit Time (bytes 40-47)
+            ulong serverTransmitTicks = GetServerTicks(ntpData, 40);
+            DateTime t2 = ParseNtpTime(serverTransmitTicks);
+
+            // 1. Calculate the total time the packet was "away"
+            double totalTime = (t3 - t0).TotalMilliseconds;
+
+            // 2. Calculate how long the server "held" the packet
+            double serverProcessingTime = (t2 - t1).TotalMilliseconds;
+
+            // 3. True Round Trip (Actual wire travel time)
+            double trueRoundTrip = totalTime - serverProcessingTime;
+
+            // 4. Final Offset
+            // (Average of the time difference at arrival and departure)
+            double offset = ((t1 - t0).TotalMilliseconds + (t2 - t3).TotalMilliseconds) / 2;
 
             return offset;
         }
