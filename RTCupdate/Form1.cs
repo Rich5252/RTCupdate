@@ -9,7 +9,10 @@ namespace RTCupdate
         public Form1()
         {
             InitializeComponent();
-            
+        }
+
+        public void Form1_Load(object sender, EventArgs e)
+        {
             this.StartPosition = FormStartPosition.Manual;
             this.Top = int.Parse(ini.Read("Window", "Top", "100"));
             this.Left = int.Parse(ini.Read("Window", "Left", "100"));
@@ -22,10 +25,16 @@ namespace RTCupdate
             this.tbIncrement.Text = ini.Read("Settings", "Increment", "50");
             AutoUpdateIntervalMs = int.Parse(ini.Read("Settings", "AutoUpdateIntervalMs", "900000"));
 
+            timer1.Interval = AutoUpdateIntervalMs;
+            timer1.Start();
+            
             this.WindowState = FormWindowState.Normal;
             this.TopMost = true;
-            
-            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), true);
+        }
+
+        private async void Form1_Shown(object sender, EventArgs e)
+        {
+            await Task.Run(() => RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), true));
         }
 
         public void RunSync(int offsetMs, bool RTCupdate = true)
@@ -94,13 +103,6 @@ namespace RTCupdate
             double inc = tbIncrement.Text == "" ? 0 : int.Parse(tbIncrement.Text);
             tbCurrentOffset.Text = (cur - inc).ToString();
             RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text));
-        }
-        private void Form1_Activated(object sender, EventArgs e)
-        {
-            timer1.Interval = AutoUpdateIntervalMs;
-            timer1.Start();
-            this.WindowState = FormWindowState.Normal;
-            this.TopMost = true;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
