@@ -5,6 +5,7 @@ namespace RTCupdate
         public IniFile ini = new IniFile("settings.ini");
         private int AutoUpdateIntervalMs = 900000;              // 15 minute
         private NamedPipeClient _NamedPipeClient = new();       //coms with TXLink for UDP time offset monitoring
+        private int RTCinitCounter = 0;
 
         public Form1()
         {
@@ -25,16 +26,17 @@ namespace RTCupdate
             this.tbIncrement.Text = ini.Read("Settings", "Increment", "50");
             AutoUpdateIntervalMs = int.Parse(ini.Read("Settings", "AutoUpdateIntervalMs", "900000"));
 
-            timer1.Interval = AutoUpdateIntervalMs;
+            timer1.Interval = 30000;         //AutoUpdateIntervalMs;
+            RTCinitCounter = 0;
             timer1.Start();
-            
+
             this.WindowState = FormWindowState.Normal;
             this.TopMost = true;
         }
 
         private async void Form1_Shown(object sender, EventArgs e)
         {
-            await Task.Run(() => RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), true));
+            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), true);
         }
 
         public void RunSync(int offsetMs, bool RTCupdate = true)
@@ -121,6 +123,17 @@ namespace RTCupdate
             ini.Write("Settings", "Increment", tbIncrement.Text);
         }
 
-
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), true);
+            if (++RTCinitCounter < 3)     //force RTC update a few times on startup to ensure it sticks
+            {
+                RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), true);
+            }
+            else
+            {
+                timer1.Interval = AutoUpdateIntervalMs;         //normal interval after initial forced updates
+            }
+        }
     }
 }

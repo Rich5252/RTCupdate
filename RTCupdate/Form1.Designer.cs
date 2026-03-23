@@ -255,8 +255,8 @@
             // timer1
             // 
             timer1.Enabled = true;
-            timer1.Interval = 900000;
-            timer1.Tick += btnResetCurrent_Click;
+            timer1.Interval = 60000;
+            timer1.Tick += timer1_Tick;
             // 
             // Form1
             // 
@@ -286,9 +286,9 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             Text = "RTC Updater";
+            FormClosing += Form1_FormClosing;
             Load += Form1_Load;
             Shown += Form1_Shown;
-            FormClosing += Form1_FormClosing;
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
             ResumeLayout(false);
