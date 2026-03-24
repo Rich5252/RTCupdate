@@ -126,14 +126,14 @@ namespace RTCupdate
         private void timer1_Tick(object sender, EventArgs e)
         {
             RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), true);
-            if (++RTCinitCounter < 3)     //force RTC update a few times on startup to ensure it sticks
+            if (RTCinitCounter < 5)     //force RTC update a few times on startup to ensure it sticks
             {
                 RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), true);
+                RTCinitCounter++;
             }
-            else
-            {
-                timer1.Interval = AutoUpdateIntervalMs;         //normal interval after initial forced updates
-            }
+
+            timer1.Interval = (timer1.Interval * 2 < AutoUpdateIntervalMs) ? timer1.Interval * 2 : AutoUpdateIntervalMs; 
+            timer1.Start();
         }
     }
 }
