@@ -8,6 +8,8 @@ namespace RTCupdate
         private int AutoUpdateIntervalMs = 900000;              // 15 minute
         private NamedPipeClient _NamedPipeClient = new();       //coms with TXLink for UDP time offset monitoring
         private int RTCinitCounter = 0;
+        private int DefaultOffset = 300;                       //default offset
+        private int Increment = 50;                              //default increment for buttons
 
         public Form1()
         {
@@ -23,9 +25,9 @@ namespace RTCupdate
             this.Height = int.Parse(ini.Read("Window", "Height", "172"));
 
             this.tbNTPserver.Text = ini.Read("Settings", "NTPServer", "time.google.com");
-            this.tbDefaultOffset.Text = ini.Read("Settings", "DefaultOffset", "150");
+            DefaultOffset = int.Parse(ini.Read("Settings", "DefaultOffset", "150"));
             this.tbCurrentOffset.Text = ini.Read("Settings", "CurrentOffset", "150");
-            this.tbIncrement.Text = ini.Read("Settings", "Increment", "50");
+            Increment = int.Parse(ini.Read("Settings", "Increment", "50"));
             this.tbTXdelay.Text = ini.Read("Settings", "TXdelay", "50");
             AutoUpdateIntervalMs = int.Parse(ini.Read("Settings", "AutoUpdateIntervalMs", "900000"));
 
@@ -71,7 +73,7 @@ namespace RTCupdate
                 string str = TXdelay.ToString();
                 string strNPstatus = _NamedPipeClient.TryConnect() ? " +" : " -";
                 _NamedPipeClient.SendCommand(str);      //send offset to TXLink for UDP time offset monitoring
-                
+
                 StatusNTP.Text = ($"Last NTP: {clock.GetFormattedUtcTime()}    RTCdiff: {diffMs:F0}ms {strNPstatus}");
             }
             catch (Exception ex)
@@ -82,34 +84,24 @@ namespace RTCupdate
 
         private void btnNTPupdate_Click(object sender, EventArgs e)
         {
-            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), false);
+            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), true);
         }
 
-        private void btnResetDefault_Click(object sender, EventArgs e)
-        {
-            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbDefaultOffset.Text));
-            tbCurrentOffset.Text = tbDefaultOffset.Text;
-        }
-
-        private void btnResetCurrent_Click(object sender, EventArgs e)
-        {
-            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text));
-        }
 
         private void btnIncrement_Click(object sender, EventArgs e)
         {
             double cur = tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text);
-            double inc = tbIncrement.Text == "" ? 0 : int.Parse(tbIncrement.Text);
+            double inc = Increment;
             tbCurrentOffset.Text = (cur + inc).ToString();
-            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text));
+            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), false);
         }
 
         private void btnDecrement_Click(object sender, EventArgs e)
         {
             double cur = tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text);
-            double inc = tbIncrement.Text == "" ? 0 : int.Parse(tbIncrement.Text);
+            double inc = Increment;
             tbCurrentOffset.Text = (cur - inc).ToString();
-            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text));
+            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), false);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -123,9 +115,9 @@ namespace RTCupdate
             }
 
             ini.Write("Settings", "NTPServer", tbNTPserver.Text);
-            ini.Write("Settings", "DefaultOffset", tbDefaultOffset.Text);
+            ini.Write("Settings", "DefaultOffset", DefaultOffset.ToString());
             ini.Write("Settings", "CurrentOffset", tbCurrentOffset.Text);
-            ini.Write("Settings", "Increment", tbIncrement.Text);
+            ini.Write("Settings", "Increment", Increment.ToString());
             ini.Write("Settings", "TXdelay", tbTXdelay.Text);
         }
 
@@ -142,10 +134,24 @@ namespace RTCupdate
             timer1.Start();
         }
 
-        private void btnSetTXdelay_Click(object sender, EventArgs e)
+        private void btnIncTXdelay_Click(object sender, EventArgs e)
         {
             // send changed TXdelay to TXlink
+            int Val = (tbTXdelay.Text == "" ? 0 : int.Parse(tbTXdelay.Text) + Increment);
+            tbTXdelay.Text = Val.ToString();
+
             RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), false);
         }
+
+        private void btnDecTXdelay_Click(object sender, EventArgs e)
+        {
+            // send changed TXdelay to TXlink
+            int Val = (tbTXdelay.Text == "" ? 0 : int.Parse(tbTXdelay.Text) - Increment);
+            Val = Val < 0 ? 0 : Val;
+            tbTXdelay.Text = Val.ToString();
+
+            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), false);
+        }
+
     }
 }
