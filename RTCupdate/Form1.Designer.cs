@@ -47,12 +47,13 @@
             btnResetDefault = new Button();
             btnResetCurrent = new Button();
             label8 = new Label();
-            tbNTPDifference = new TextBox();
+            tbTXdelay = new TextBox();
             label9 = new Label();
             statusStrip1 = new StatusStrip();
             StatusNTP = new ToolStripStatusLabel();
             StatusError = new ToolStripStatusLabel();
             timer1 = new System.Windows.Forms.Timer(components);
+            btnSetTXdelay = new Button();
             statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -76,7 +77,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 33);
+            label2.Location = new Point(9, 33);
             label2.Name = "label2";
             label2.Size = new Size(76, 15);
             label2.TabIndex = 2;
@@ -102,7 +103,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(10, 59);
+            label4.Location = new Point(9, 59);
             label4.Name = "label4";
             label4.Size = new Size(78, 15);
             label4.TabIndex = 5;
@@ -128,7 +129,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(15, 85);
+            label6.Location = new Point(9, 85);
             label6.Name = "label6";
             label6.Size = new Size(61, 15);
             label6.TabIndex = 8;
@@ -209,32 +210,28 @@
             label8.Size = new Size(23, 15);
             label8.TabIndex = 18;
             label8.Text = "ms";
-            label8.Visible = false;
             // 
-            // tbNTPDifference
+            // tbTXdelay
             // 
-            tbNTPDifference.Location = new Point(99, 111);
-            tbNTPDifference.Name = "tbNTPDifference";
-            tbNTPDifference.ReadOnly = true;
-            tbNTPDifference.Size = new Size(45, 23);
-            tbNTPDifference.TabIndex = 17;
-            tbNTPDifference.Text = "150";
-            tbNTPDifference.Visible = false;
+            tbTXdelay.Location = new Point(99, 111);
+            tbTXdelay.Name = "tbTXdelay";
+            tbTXdelay.Size = new Size(45, 23);
+            tbTXdelay.TabIndex = 17;
+            tbTXdelay.Text = "50";
             // 
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(15, 114);
+            label9.Location = new Point(9, 114);
             label9.Name = "label9";
-            label9.Size = new Size(85, 15);
+            label9.Size = new Size(75, 15);
             label9.TabIndex = 16;
-            label9.Text = "NTP difference";
-            label9.Visible = false;
+            label9.Text = "TX UTC delay";
             // 
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { StatusNTP, StatusError });
-            statusStrip1.Location = new Point(0, 111);
+            statusStrip1.Location = new Point(0, 139);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(284, 22);
             statusStrip1.TabIndex = 19;
@@ -258,14 +255,25 @@
             timer1.Interval = 60000;
             timer1.Tick += timer1_Tick;
             // 
+            // btnSetTXdelay
+            // 
+            btnSetTXdelay.Location = new Point(187, 110);
+            btnSetTXdelay.Name = "btnSetTXdelay";
+            btnSetTXdelay.Size = new Size(38, 23);
+            btnSetTXdelay.TabIndex = 20;
+            btnSetTXdelay.Text = "Set";
+            btnSetTXdelay.UseVisualStyleBackColor = true;
+            btnSetTXdelay.Click += btnSetTXdelay_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(284, 133);
+            ClientSize = new Size(284, 161);
+            Controls.Add(btnSetTXdelay);
             Controls.Add(statusStrip1);
             Controls.Add(label8);
-            Controls.Add(tbNTPDifference);
+            Controls.Add(tbTXdelay);
             Controls.Add(label9);
             Controls.Add(btnResetCurrent);
             Controls.Add(btnResetDefault);
@@ -314,11 +322,12 @@
         private Button btnResetDefault;
         private Button btnResetCurrent;
         private Label label8;
-        private TextBox tbNTPDifference;
+        private TextBox tbTXdelay;
         private Label label9;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel StatusNTP;
         private ToolStripStatusLabel StatusError;
         private System.Windows.Forms.Timer timer1;
+        private Button btnSetTXdelay;
     }
 }
