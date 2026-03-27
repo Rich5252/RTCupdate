@@ -93,7 +93,7 @@ namespace RTCupdate
             double cur = tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text);
             double inc = Increment;
             tbCurrentOffset.Text = (cur + inc).ToString();
-            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), false);
+            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), true);
         }
 
         private void btnDecrement_Click(object sender, EventArgs e)
@@ -101,7 +101,7 @@ namespace RTCupdate
             double cur = tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text);
             double inc = Increment;
             tbCurrentOffset.Text = (cur - inc).ToString();
-            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), false);
+            RunSync(tbCurrentOffset.Text == "" ? 0 : int.Parse(tbCurrentOffset.Text), true);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
