@@ -61,7 +61,7 @@
             // 
             // tbNTPserver
             // 
-            tbNTPserver.Location = new Point(98, 3);
+            tbNTPserver.Location = new Point(89, 3);
             tbNTPserver.Name = "tbNTPserver";
             tbNTPserver.Size = new Size(127, 23);
             tbNTPserver.TabIndex = 1;
@@ -79,7 +79,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(150, 36);
+            label5.Location = new Point(141, 36);
             label5.Name = "label5";
             label5.Size = new Size(23, 15);
             label5.TabIndex = 7;
@@ -87,7 +87,7 @@
             // 
             // tbCurrentOffset
             // 
-            tbCurrentOffset.Location = new Point(99, 33);
+            tbCurrentOffset.Location = new Point(90, 33);
             tbCurrentOffset.Name = "tbCurrentOffset";
             tbCurrentOffset.Size = new Size(45, 23);
             tbCurrentOffset.TabIndex = 6;
@@ -95,7 +95,7 @@
             // 
             // btnIncRTCdelay
             // 
-            btnIncRTCdelay.Location = new Point(187, 32);
+            btnIncRTCdelay.Location = new Point(178, 32);
             btnIncRTCdelay.Name = "btnIncRTCdelay";
             btnIncRTCdelay.Size = new Size(38, 23);
             btnIncRTCdelay.TabIndex = 11;
@@ -105,7 +105,7 @@
             // 
             // btnDecRTCdelay
             // 
-            btnDecRTCdelay.Location = new Point(231, 32);
+            btnDecRTCdelay.Location = new Point(222, 32);
             btnDecRTCdelay.Name = "btnDecRTCdelay";
             btnDecRTCdelay.Size = new Size(38, 23);
             btnDecRTCdelay.TabIndex = 12;
@@ -115,7 +115,7 @@
             // 
             // btnNTPupdate
             // 
-            btnNTPupdate.Location = new Point(231, 3);
+            btnNTPupdate.Location = new Point(222, 3);
             btnNTPupdate.Name = "btnNTPupdate";
             btnNTPupdate.Size = new Size(38, 23);
             btnNTPupdate.TabIndex = 13;
@@ -126,7 +126,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(150, 65);
+            label8.Location = new Point(141, 65);
             label8.Name = "label8";
             label8.Size = new Size(23, 15);
             label8.TabIndex = 18;
@@ -134,7 +134,7 @@
             // 
             // tbTXdelay
             // 
-            tbTXdelay.Location = new Point(99, 62);
+            tbTXdelay.Location = new Point(90, 62);
             tbTXdelay.Name = "tbTXdelay";
             tbTXdelay.Size = new Size(45, 23);
             tbTXdelay.TabIndex = 17;
@@ -154,7 +154,7 @@
             statusStrip1.Items.AddRange(new ToolStripItem[] { StatusNTP, StatusError });
             statusStrip1.Location = new Point(0, 94);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(276, 22);
+            statusStrip1.Size = new Size(267, 22);
             statusStrip1.TabIndex = 19;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -178,7 +178,7 @@
             // 
             // btnIncTXdelay
             // 
-            btnIncTXdelay.Location = new Point(187, 61);
+            btnIncTXdelay.Location = new Point(178, 61);
             btnIncTXdelay.Name = "btnIncTXdelay";
             btnIncTXdelay.Size = new Size(38, 23);
             btnIncTXdelay.TabIndex = 20;
@@ -188,7 +188,7 @@
             // 
             // btnDecTXdelay
             // 
-            btnDecTXdelay.Location = new Point(231, 61);
+            btnDecTXdelay.Location = new Point(222, 61);
             btnDecTXdelay.Name = "btnDecTXdelay";
             btnDecTXdelay.Size = new Size(38, 23);
             btnDecTXdelay.TabIndex = 21;
@@ -200,7 +200,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(276, 116);
+            ClientSize = new Size(267, 116);
             Controls.Add(btnDecTXdelay);
             Controls.Add(btnIncTXdelay);
             Controls.Add(statusStrip1);
@@ -216,8 +216,12 @@
             Controls.Add(tbNTPserver);
             Controls.Add(label1);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "Form1";
+            SizeGripStyle = SizeGripStyle.Hide;
             Text = "RTC Updater";
+            TopMost = true;
             FormClosing += Form1_FormClosing;
             Load += Form1_Load;
             Shown += Form1_Shown;
