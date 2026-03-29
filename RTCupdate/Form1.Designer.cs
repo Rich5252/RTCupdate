@@ -217,11 +217,9 @@
             Controls.Add(label1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MinimizeBox = false;
             Name = "Form1";
             SizeGripStyle = SizeGripStyle.Hide;
             Text = "RTC Updater";
-            TopMost = true;
             FormClosing += Form1_FormClosing;
             Load += Form1_Load;
             Shown += Form1_Shown;
